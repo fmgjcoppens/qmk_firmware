@@ -1,22 +1,69 @@
 #include QMK_KEYBOARD_H
+
 #include "unicode_map.h"
 
-/*
-enum layer_names {
-    DEFAULT,
-    SECOND
-}
-*/
+enum layers {
+    BL, // 0: Base layer US/QWERTY
+    CL, // 1: Control layer + unicode characters ç,Ç, œ,Œ, €
+    AL, // 2: Unicode layer for ACUTE (') accents
+    GL, // 3: Unicode layer for GRAVE (`) accents
+    PL, // 4: Unicode layer for CIRCUMFLEX (^) accents
+    TL  // 5: Unicode layer for TREMA (") accents
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-	[0] = LAYOUT(KC_ESC, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_DEL, KC_MUTE, KC_GRV, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_BSPC, KC_HOME, KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS, KC_PGUP, KC_CAPS, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, KC_ENT, KC_PGDN, KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSFT, KC_UP, KC_END, KC_LCTL, KC_LALT, KC_LGUI, KC_SPC, MO(1), KC_RALT, KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT),
+	[BL] = LAYOUT(
+        KC_ESC, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_DEL, KC_MUTE, KC_GRV, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_BSPC, KC_HOME, KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS, KC_PGUP, KC_CAPS, KC_A, KC_S, KC_D, LT(AL, KC_F), KC_G, KC_H, LT(GL, KC_J), LT(PL, KC_K), LT(TL, KC_L), KC_SCLN, KC_QUOT, KC_ENT, KC_PGDN, KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSFT, KC_UP, KC_END, KC_LCTL, KC_LALT, KC_LGUI, KC_SPC, MO(CL), KC_RALT, KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT),
 
-	[1] = LAYOUT(RGB_TOG, RGB_VAD, RGB_VAI, RGB_HUD, RGB_HUI, NK_TOGG, KC_MPRV, KC_MPLY, KC_MNXT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, XP(LA_GRAV,UA_GRAV), XP(LA_CIRC,UA_CIRC), XP(LC_CDIL,UC_CDIL), XP(LE_GRAV,UE_GRAV), XP(LE_ACUT,UE_ACUT), XP(LE_CIRC,UE_CIRC), XP(LE_TREM,UE_TREM), XP(LI_CIRC,UI_CIRC), XP(LI_TREM,UI_TREM), XP(LO_CIRC,UO_CIRC), XP(L_OELIG,U_OELIG), X(EUROSGN), QK_BOOT, KC_TRNS, KC_TRNS, XP(LU_GRAV,UU_GRAV), XP(LU_CIRC,UU_CIRC), XP(LU_TREM,UU_TREM), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, RGB_MOD, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, RGB_SPD, RGB_RMOD, RGB_SPI)
+	[CL] = LAYOUT(
+        RGB_TOG, RGB_HUD, RGB_HUI, RGB_SAD, RGB_SAI, RGB_VAD, RGB_VAI, _______, _______, NK_TOGG, KC_MPRV, KC_MPLY, KC_MNXT, _______, _______, _______, _______, _______, _______, X(EUROSGN), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, XP(L_OELIG, U_OELIG), _______, _______, _______, QK_BOOT, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, XP(LC_CDIL, UC_CDIL), _______, _______, _______, _______, _______, _______, _______, _______, RGB_MOD, _______, _______, _______, _______, _______, _______, _______, _______, RGB_SPD, RGB_RMOD, RGB_SPI),
+
+	[AL] = LAYOUT(
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, XP(LE_ACUT,UE_ACUT), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______),
+
+	[GL] = LAYOUT(
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, XP(LE_GRAV,UE_GRAV), _______, _______, _______, XP(LU_GRAV,UU_GRAV), _______, _______, _______, _______, _______, _______, _______, _______, XP(LA_GRAV,UA_GRAV), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______),
+
+	[PL] = LAYOUT(
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, XP(LE_CIRC,UE_CIRC), _______, _______, _______, XP(LU_CIRC,UU_CIRC), XP(LI_CIRC,UI_CIRC), XP(LO_CIRC,UO_CIRC), _______, _______, _______, _______, _______, _______, XP(LA_CIRC,UA_CIRC), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______),
+
+	[TL] = LAYOUT(
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, XP(LE_TREM, UE_TREM), _______, _______, _______, XP(LU_TREM, UU_TREM), XP(LI_TREM, UI_TREM), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______)
 };
 
 #if defined(ENCODER_ENABLE) && defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
-    [0] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
-    [1] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) }
+    [BL] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+    [CL] = { ENCODER_CCW_CW(_______, _______) },
+    [AL] = { ENCODER_CCW_CW(_______, _______) },
+    [GL] = { ENCODER_CCW_CW(_______, _______) },
+    [PL] = { ENCODER_CCW_CW(_______, _______) },
+    [TL] = { ENCODER_CCW_CW(_______, _______) }
 };
 #endif
+
+// uint32_t mode;
+// uint16_t hue;
+// uint8_t sat;
+// uint8_t val;
+
+// // void matrix_init_user(void)
+// // {
+// //   mode = rgblight_config.mode;
+// // }
+
+// void led_set_user(uint8_t usb_led) {
+//     if (usb_led & (1 << USB_LED_CAPS_LOCK)) {
+//         mode = rgblight_get_mode();
+//         hue = rgblight_get_hue();
+//         sat = rgblight_get_sat();
+//         val = rgblight_get_val();
+
+//         rgblight_mode_noeeprom(1);
+//         rgblight_sethsv(0xD3, 0xFF, 0xFF);
+//     }
+//     else {
+//         rgblight_mode(mode);
+//         rgblight_sethsv(hue, sat, val);
+//     }
+// }

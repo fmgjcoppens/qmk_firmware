@@ -254,7 +254,7 @@ __attribute__((weak)) void unicode_input_finish(void) {
             unregister_code(UNICODE_KEY_MAC);
             break;
         case UNICODE_MODE_LINUX:
-            tap_code(KC_ENT);
+            tap_code(KC_ENTER);
             if (unicode_saved_led_state.caps_lock) {
                 tap_code(KC_CAPS_LOCK);
             }
