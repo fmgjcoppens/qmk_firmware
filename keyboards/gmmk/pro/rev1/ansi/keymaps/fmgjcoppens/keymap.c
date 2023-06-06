@@ -100,6 +100,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 
 // Set Matrix LEDs RGB colors
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    
     // Set color of ALPHA LEDs to BLUE when CAPSLOCK is ON
     if (host_keyboard_led_state().caps_lock) {
         for (uint8_t led = 0; led < alpha_leds_s; ++led) {
