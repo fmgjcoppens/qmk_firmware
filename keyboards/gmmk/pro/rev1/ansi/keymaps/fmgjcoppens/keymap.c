@@ -1,6 +1,7 @@
 #include QMK_KEYBOARD_H
 
 #include "unicode_map.h"
+#include "colors.h"
 
 enum layers {
     BL, // 0: Base layer US/QWERTY
@@ -98,8 +99,16 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 };
 #endif
 
-// Set Matrix LEDs RGB colors
+// Set RGB Matrix colors
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+
+    // Set default RGB colors for all layers: GOLD sidelights and faint GOLD keylights
+    for (uint8_t led = led_min; led < led_max; ++led) {
+        if (g_led_config.flags[led] & LED_FLAG_UNDERGLOW)
+            rgb_matrix_set_color(led, RGB_GOLD_100);
+        else
+            rgb_matrix_set_color(led, RGB_GOLD_10);
+    }
     
     // Set color of ALPHA LEDs to BLUE when CAPSLOCK is ON
     if (host_keyboard_led_state().caps_lock) {
@@ -141,50 +150,3 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     
     return false;
 }
-
-
-
-
-
-// // Set Matrix LEDs RGB colors
-// bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max)
-// {
-//     // Loop over all matrix LEDs
-//     for (uint8_t led = led_min; led < led_max; ++led) {
-
-//         // Set color of KEY LEDs to AZURE when CAPSLOCK is ON
-//         if (host_keyboard_led_state().caps_lock)
-//         {
-//             if (g_led_config.flags[led] & LED_FLAG_KEYLIGHT)
-//                 rgb_matrix_set_color(led, RGB_AZURE);
-//         }       
-
-//         // Set color of KEY LEDs based on the active layer
-//         switch(get_highest_layer(layer_state|default_layer_state)) {
-//             case 5:
-//                 if (g_led_config.flags[led] & LED_FLAG_KEYLIGHT)
-//                     rgb_matrix_set_color(led, RGB_MAGENTA);
-//                 break;
-//             case 4:
-//                 if (g_led_config.flags[led] & LED_FLAG_KEYLIGHT)
-//                     rgb_matrix_set_color(led, RGB_BLUE);
-//                 break;
-//             case 3:
-//                 if (g_led_config.flags[led] & LED_FLAG_KEYLIGHT)
-//                     rgb_matrix_set_color(led, RGB_GREEN);
-//                 break;
-//             case 2:
-//                 if (g_led_config.flags[led] & LED_FLAG_KEYLIGHT)
-//                     rgb_matrix_set_color(led, RGB_CYAN);
-//                 break;
-//             case 1:
-//                 if (g_led_config.flags[led] & LED_FLAG_KEYLIGHT)
-//                     rgb_matrix_set_color(led, RGB_RED);
-//                 break;
-//             default:
-//                 break;
-//         }
-//     }
-    
-//     return false;
-// }
