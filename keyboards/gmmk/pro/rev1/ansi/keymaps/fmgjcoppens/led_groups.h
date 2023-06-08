@@ -25,7 +25,7 @@ const uint8_t PL_leds[PL_LEDS] = {20,41,46,52,9,47};
 #define TL_LEDS 4
 const uint8_t TL_leds[TL_LEDS] = {20,41,46,53};
 
-#define I3_LEDS 18
+#define I3_LEDS 25
 const uint8_t i3_leds[I3_LEDS] = {
     7,  // 1
     13, // 2
@@ -35,14 +35,21 @@ const uint8_t i3_leds[I3_LEDS] = {
     35, // 6
     40, // 7
     45, // 8
-    8,
-    14,
-    26, 
-    33,
-    58,
-    4,
-    5,
-    22,
-    25,
-    17
+    37, // h
+    27, // v
+    26, // f
+    25, // r
+    14, // w
+    58, // p
+    22, // c
+    8,  // q
+    4,  // shift_l
+    5,  // ctrl_l
+    17, // alt_l (KC_LGUI on my layout!)
+    33, // space
+    96, // enter
+    95, // left
+    94, // up
+    79, // right
+    97  // down
 };
