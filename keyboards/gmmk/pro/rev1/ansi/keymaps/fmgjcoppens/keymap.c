@@ -138,8 +138,16 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     // Set color of i3 modifier LEDs to WHITE when i3 MOD is ON
     if (KC_LGUI_pressed) {
     // if (KC_LGUI_pressed && KC_LSFT_pressed) {
-        for (uint8_t led = 0; led < I3_LEDS; ++led) {
-            rgb_matrix_set_color(i3_leds[led], RGB_LAYER);
+        rgb_matrix_set_color(i3_leds[0], RGB_RB_1);
+        rgb_matrix_set_color(i3_leds[1], RGB_RB_2);
+        rgb_matrix_set_color(i3_leds[2], RGB_RB_3);
+        rgb_matrix_set_color(i3_leds[3], RGB_RB_4);
+        rgb_matrix_set_color(i3_leds[4], RGB_RB_5);
+        rgb_matrix_set_color(i3_leds[5], RGB_RB_6);
+        rgb_matrix_set_color(i3_leds[6], RGB_RB_7);
+        rgb_matrix_set_color(i3_leds[7], RGB_RB_8);
+        for (uint8_t led = 8; led < I3_LEDS; ++led) {
+            rgb_matrix_set_color(i3_leds[led], RGB_I3);
         }
     }
 
