@@ -7,9 +7,9 @@ const uint8_t alpha_leds[ALPHA_LEDS] = {
     10,16,22,27,32,38,43
 };
 
-#define CL_LEDS 21
+#define CL_LEDS 22
 const uint8_t CL_leds[CL_LEDS] = {
-    0,6,12,13,18,23,28,34,50,56,61,66,
+    0,6,12,13,18,23,28,30,34,50,56,61,66,
     24,52,93,22,49,94,95,97,79
 };
 

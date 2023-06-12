@@ -7,15 +7,7 @@
 
 #define HSV_GOLD_25       36,  255,   63
 #define HSV_GOLD_10       36,  255,   25
-
-// #define RGB_RB_1        0XE3, 0X06, 0X12
-// #define RGB_RB_2        0XF5, 0X88, 0X01
-// #define RGB_RB_3        0XFE, 0XCB, 0X01
-// #define RGB_RB_4        0XA1, 0XC7, 0X13
-// #define RGB_RB_5        0X4E, 0XAF, 0X32
-// #define RGB_RB_6        0X43, 0XBE, 0XEA
-// #define RGB_RB_7        0X00, 0X7C, 0XC6
-// #define RGB_RB_8        0X9E, 0X57, 0X9A
+#define HSV_GOLD_00       36,  255,   00
 
 #define RGB_RB_1        RGB_RED
 #define RGB_RB_2        RGB_ORANGE

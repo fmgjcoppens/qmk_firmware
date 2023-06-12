@@ -3,9 +3,11 @@
 #include "led_groups.h"
 #include "unicode_map.h"
 #include "colors.h"
+// #include "print.h"
 
 enum custom_keycodes {
-    M_EML = SAFE_RANGE
+    M_EML = SAFE_RANGE,
+    M_TEL
 };
 
 enum layers {
@@ -31,7 +33,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_CL] = LAYOUT(
         RGB_TOG,    RGB_HUD,    RGB_HUI,    RGB_SAD,    RGB_SAI,                RGB_VAD,    RGB_VAI,    _______,    _______,    NK_TOGG,                KC_MPRV,    KC_MPLY,    KC_MNXT,    _______,                _______,
         _______,    _______,    M_EML,      _______,    X(EUROSGN),             _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,                _______,
-        _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    XP(L_OELIG,U_OELIG),    _______,    _______,    _______,    QK_BOOT,                _______,
+        _______,    _______,    _______,    _______,    _______,                M_TEL,      _______,    _______,    _______,    XP(L_OELIG,U_OELIG),    _______,    _______,    _______,    QK_BOOT,                _______,
         _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    _______,                _______,    _______,                _______,                _______,
         _______,                _______,    _______,    XP(LC_CDIL,UC_CDIL),    _______,    _______,    _______,    _______,    _______,                _______,    _______,                _______,    RGB_MOD,    _______,
         _______,    _______,    _______,                                                    _______,                                                    _______,    _______,    _______,    RGB_SPD,    RGB_RMOD,   RGB_SPI
@@ -90,7 +92,9 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 bool lgui_pressed = false;
 bool lsft_pressed = false;
 bool lctl_pressed = false;
+bool grv_pressed  = false;
 
+static uint16_t time;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch(keycode) {
         case M_EML:
@@ -98,9 +102,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING("mail@fmgjcoppens.nl");
             }
             break;
+        case M_TEL:
+            if (record->event.pressed) {
+                SEND_STRING("+33 (0)7 83 41 77 48");
+            }
+            break;
         case KC_LGUI:
             if (record->event.pressed) {
                 lgui_pressed = true;
+                time = timer_read(); // set time to current time
             }
             else {
                 lgui_pressed = false;
@@ -122,6 +132,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 lctl_pressed = false;
             }
             break;    
+        // case KC_GRV: // My 'test'-key
+        //     if (record->event.pressed) {
+        //         grv_pressed = true;
+        //         time = timer_read(); // set time to current time
+        //     }
+        //     else {
+        //         grv_pressed = false;
+        //     }
+        //     break;    
     }
     return true;
 }
@@ -130,6 +149,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // Set colors only on the layer-modifier keys and the keys they affect
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+
+
+    // A safe test area that only activates if the test-key 'KC_GRV' is pressed.
+    // This prevents bricking the board and having to open it up to press the
+    // hardware boot-mode button like I did this morning, by activating a never
+    // ending while loop on the base layer ;-)
+    // if (grv_pressed) {
+    //    // test code here
+    // }
 
     // Set default RGB colors for all layers: GOLD sidelights and faint GOLD keylights
     for (uint8_t led = led_min; led < led_max; ++led) {
@@ -146,20 +174,16 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     // Set color of i3 modifier LEDs to WHITE when i3 MOD is ON
+
     if (lgui_pressed) { // LGUI pressed
-        if (lsft_pressed && lctl_pressed) {
-            // do nothing if all buttons pressed simultaniously
+        static const uint16_t delay = 40;
+        if (lsft_pressed && lctl_pressed) { // LGUI + LSFT + LCTRL pressed
+            // do nothing
         }
         else if (lsft_pressed) { // LGUI + LSFT pressed
-            rgb_matrix_set_color(i3_leds[0], RGB_RB_1);
-            rgb_matrix_set_color(i3_leds[1], RGB_RB_2);
-            rgb_matrix_set_color(i3_leds[2], RGB_RB_3);
-            rgb_matrix_set_color(i3_leds[3], RGB_RB_4);
-            rgb_matrix_set_color(i3_leds[4], RGB_RB_5);
-            rgb_matrix_set_color(i3_leds[5], RGB_RB_6);
-            rgb_matrix_set_color(i3_leds[6], RGB_RB_7);
-            rgb_matrix_set_color(i3_leds[7], RGB_RB_8);
-
+            // #include "i3_ws_anim_caterpillar.c"
+            #include "i3_ws_anim_pingpong.c"
+            
             rgb_matrix_set_color(i3_leds[12], RGB_I3);
             rgb_matrix_set_color(i3_leds[13], RGB_I3);
             rgb_matrix_set_color(i3_leds[14], RGB_I3);
@@ -184,14 +208,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             rgb_matrix_set_color(i3_leds[17], RGB_I3);
         }
         else { // only LGUI pressed
-            rgb_matrix_set_color(i3_leds[0], RGB_RB_1);
-            rgb_matrix_set_color(i3_leds[1], RGB_RB_2);
-            rgb_matrix_set_color(i3_leds[2], RGB_RB_3);
-            rgb_matrix_set_color(i3_leds[3], RGB_RB_4);
-            rgb_matrix_set_color(i3_leds[4], RGB_RB_5);
-            rgb_matrix_set_color(i3_leds[5], RGB_RB_6);
-            rgb_matrix_set_color(i3_leds[6], RGB_RB_7);
-            rgb_matrix_set_color(i3_leds[7], RGB_RB_8);
+            // #include "i3_ws_anim_caterpillar.c"
+            #include "i3_ws_anim_pingpong.c"
 
             rgb_matrix_set_color(i3_leds[8], RGB_I3);
             rgb_matrix_set_color(i3_leds[9], RGB_I3);
@@ -244,5 +262,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 // Set RGB Matrix default effect and color
 void keyboard_post_init_user(void) {
     rgb_matrix_mode(RGB_MATRIX_SOLID_COLOR);
-    rgb_matrix_sethsv(HSV_OFF);
+    rgb_matrix_sethsv(HSV_GOLD_00);
+    // debug_enable=true;
+    // debug_matrix=true;
 }
