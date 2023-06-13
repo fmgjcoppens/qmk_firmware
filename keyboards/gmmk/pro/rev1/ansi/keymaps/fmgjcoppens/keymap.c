@@ -3,11 +3,14 @@
 #include "led_groups.h"
 #include "unicode_map.h"
 #include "colors.h"
-// #include "print.h"
+
+#ifdef ENABLE_TEST_CODE
+#include "print.h"
+#endif // ENABLE_TEST_CODE
 
 enum custom_keycodes {
-    M_EML = SAFE_RANGE,
-    M_TEL
+    M_EMAIL = SAFE_RANGE,
+    M_PHONE
 };
 
 enum layers {
@@ -25,15 +28,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,     KC_F1,      KC_F2,      KC_F3,  KC_F4,          KC_F5,      KC_F6,      KC_F7,          KC_F8,          KC_F9,          KC_F10,     KC_F11,     KC_F12,     KC_DEL,                 KC_MUTE,
         KC_GRV,     KC_1,       KC_2,       KC_3,   KC_4,           KC_5,       KC_6,       KC_7,           KC_8,           KC_9,           KC_0,       KC_MINS,    KC_EQL,     KC_BSPC,                KC_HOME,
         KC_TAB,     KC_Q,       KC_W,       KC_E,   KC_R,           KC_T,       KC_Y,       KC_U,           KC_I,           KC_O,           KC_P,       KC_LBRC,    KC_RBRC,    KC_BSLS,                KC_PGUP,
-        KC_CAPS,    KC_A,       KC_S,       KC_D,   LT(_AL,KC_F),    KC_G,       KC_H,       LT(_GL,KC_J),    LT(_PL,KC_K),    LT(_TL,KC_L),    KC_SCLN,    KC_QUOT,                KC_ENT,                 KC_PGDN,
+        KC_CAPS,    KC_A,       KC_S,       KC_D,   LT(_AL,KC_F),   KC_G,       KC_H,       LT(_GL,KC_J),   LT(_PL,KC_K),   LT(_TL,KC_L),   KC_SCLN,    KC_QUOT,                KC_ENT,                 KC_PGDN,
         KC_LSFT,                KC_Z,       KC_X,   KC_C,           KC_V,       KC_B,       KC_N,           KC_M,           KC_COMM,        KC_DOT,     KC_SLSH,                KC_RSFT,    KC_UP,      KC_END,
-        KC_LCTL,    KC_LALT,    KC_LGUI,                                        KC_SPC,                                                     MO(_CL),     KC_RALT,    KC_RCTL,    KC_LEFT,    KC_DOWN,    KC_RGHT
+        KC_LCTL,    KC_LALT,    KC_LGUI,                                        KC_SPC,                                                     MO(_CL),    KC_RALT,    KC_RCTL,    KC_LEFT,    KC_DOWN,    KC_RGHT
     ),
 
     [_CL] = LAYOUT(
         RGB_TOG,    RGB_HUD,    RGB_HUI,    RGB_SAD,    RGB_SAI,                RGB_VAD,    RGB_VAI,    _______,    _______,    NK_TOGG,                KC_MPRV,    KC_MPLY,    KC_MNXT,    _______,                _______,
-        _______,    _______,    M_EML,      _______,    X(EUROSGN),             _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,                _______,
-        _______,    _______,    _______,    _______,    _______,                M_TEL,      _______,    _______,    _______,    XP(L_OELIG,U_OELIG),    _______,    _______,    _______,    QK_BOOT,                _______,
+        _______,    _______,    M_EMAIL,    _______,    X(EUROSGN),             _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,                _______,
+        _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    XP(L_OELIG,U_OELIG),    M_PHONE,    _______,    _______,    QK_BOOT,                _______,
         _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    _______,                _______,    _______,                _______,                _______,
         _______,                _______,    _______,    XP(LC_CDIL,UC_CDIL),    _______,    _______,    _______,    _______,    _______,                _______,    _______,                _______,    RGB_MOD,    _______,
         _______,    _______,    _______,                                                    _______,                                                    _______,    _______,    _______,    RGB_SPD,    RGB_RMOD,   RGB_SPI
@@ -95,22 +98,38 @@ bool lctl_pressed = false;
 bool grv_pressed  = false;
 
 static uint16_t time;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    const uint8_t mods = get_mods();
     switch(keycode) {
-        case M_EML:
+        case M_EMAIL:
             if (record->event.pressed) {
-                SEND_STRING("mail@fmgjcoppens.nl");
+                if (mods & MOD_MASK_SHIFT) {
+                    unregister_mods(MOD_MASK_SHIFT);
+                    SEND_STRING("francois.coppens@irsamc.ups-tlse.fr");
+                    register_mods(mods);
+                }
+                else {
+                    SEND_STRING("mail@fmgjcoppens.nl");
+                }
             }
             break;
-        case M_TEL:
+        case M_PHONE:
             if (record->event.pressed) {
-                SEND_STRING("+33 (0)7 83 41 77 48");
+                if (mods & MOD_MASK_SHIFT) {
+                    unregister_mods(MOD_MASK_SHIFT);
+                    SEND_STRING("+33783417748");
+                    register_mods(mods);
+                }
+                else {
+                    SEND_STRING("+33 (0)7 83 41 77 48");
+                }
             }
             break;
         case KC_LGUI:
             if (record->event.pressed) {
                 lgui_pressed = true;
-                time = timer_read(); // set time to current time
+                time = record->event.time;
             }
             else {
                 lgui_pressed = false;
@@ -131,16 +150,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             else {
                 lctl_pressed = false;
             }
-            break;    
-        // case KC_GRV: // My 'test'-key
-        //     if (record->event.pressed) {
-        //         grv_pressed = true;
-        //         time = timer_read(); // set time to current time
-        //     }
-        //     else {
-        //         grv_pressed = false;
-        //     }
-        //     break;    
+            break;
+#ifdef ENABLE_TEST_CODE
+        case KC_GRV: // My 'test'-key
+            if (record->event.pressed) {
+                grv_pressed = true;
+                time = record->event.time;
+            }
+            else {
+                grv_pressed = false;
+            }
+            break;
+#endif // ENABLE_TEST_CODE
     }
     return true;
 }
@@ -150,22 +171,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // Set colors only on the layer-modifier keys and the keys they affect
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
-
+#ifdef ENABLE_TEST_CODE
     // A safe test area that only activates if the test-key 'KC_GRV' is pressed.
     // This prevents bricking the board and having to open it up to press the
     // hardware boot-mode button like I did this morning, by activating a never
     // ending while loop on the base layer ;-)
-    // if (grv_pressed) {
-    //    // test code here
-    // }
+    if (grv_pressed) {
+       // test code here
+    }
+#endif // ENABLE_TEST_CODE
 
-    // Set default RGB colors for all layers: GOLD sidelights and faint GOLD keylights
+    // Set default RGB colors for all layers: GOLD sidelights
     for (uint8_t led = led_min; led < led_max; ++led) {
         if (g_led_config.flags[led] & LED_FLAG_UNDERGLOW)
             rgb_matrix_set_color(led, RGB_GOLD);
     }
 
-    // Set color of ALPHA LEDs to BLUE when CAPSLOCK is ON
+    // Set color of ALPHA LEDs when CAPSLOCK is PRESSED
     if (host_keyboard_led_state().caps_lock) {
         for (uint8_t led = 0; led < ALPHA_LEDS; ++led) {
             rgb_matrix_set_color(alpha_leds[led], RGB_CAPSL);
@@ -173,17 +195,15 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         rgb_matrix_set_color(3, RGB_CAPSL);
     }
 
-    // Set color of i3 modifier LEDs to WHITE when i3 MOD is ON
-
+    // Set color of i3 modifier LEDs when i3 MODs are PRESSED
     if (lgui_pressed) { // LGUI pressed
-        static const uint16_t delay = 40;
+        static const uint16_t delay = 75;
         if (lsft_pressed && lctl_pressed) { // LGUI + LSFT + LCTRL pressed
             // do nothing
         }
         else if (lsft_pressed) { // LGUI + LSFT pressed
-            // #include "i3_ws_anim_caterpillar.c"
-            #include "i3_ws_anim_pingpong.c"
-            
+            #include "anim/i3_ws_anim_breathe.c"
+        
             rgb_matrix_set_color(i3_leds[12], RGB_I3);
             rgb_matrix_set_color(i3_leds[13], RGB_I3);
             rgb_matrix_set_color(i3_leds[14], RGB_I3);
@@ -208,8 +228,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             rgb_matrix_set_color(i3_leds[17], RGB_I3);
         }
         else { // only LGUI pressed
-            // #include "i3_ws_anim_caterpillar.c"
-            #include "i3_ws_anim_pingpong.c"
+            #include "anim/i3_ws_anim_breathe.c"
 
             rgb_matrix_set_color(i3_leds[8], RGB_I3);
             rgb_matrix_set_color(i3_leds[9], RGB_I3);
@@ -225,7 +244,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
 
-    // Set color of KEY LEDs based on the active layer
+    // Set color of layer modifier LEDs based on the active layer
     switch(get_highest_layer(layer_state|default_layer_state)) {
         case 5:
             for (uint8_t led = 0; led < TL_LEDS; ++led) {
@@ -263,6 +282,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 void keyboard_post_init_user(void) {
     rgb_matrix_mode(RGB_MATRIX_SOLID_COLOR);
     rgb_matrix_sethsv(HSV_GOLD_00);
-    // debug_enable=true;
-    // debug_matrix=true;
+#ifdef ENABLE_TEST_CODE
+    debug_enable=true;
+    debug_matrix=true;
+#endif // ENABLE_TEST_CODE
 }
