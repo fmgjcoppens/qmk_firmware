@@ -1,3 +1,19 @@
+/* Copyright 2023 François Coppens <https://github.com/fmgjcoppens>.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #pragma once
 
 #define RGB_CAPSL           RGB_CYAN // Default color for the capslock affected keys
@@ -83,27 +99,27 @@
 #define RGB_CYAN_0          RGB_OFF
 
 #define RGB_BLUE_100        RGB_BLUE
-#define RGB_BLUE_90         0x00, 0x00, 0xE6 
-#define RGB_BLUE_80         0x00, 0x00, 0xCC 
-#define RGB_BLUE_70         0x00, 0x00, 0xB3 
-#define RGB_BLUE_60         0x00, 0x00, 0x99 
-#define RGB_BLUE_50         0x00, 0x00, 0x80 
-#define RGB_BLUE_40         0x00, 0x00, 0x66 
-#define RGB_BLUE_30         0x00, 0x00, 0x4D 
-#define RGB_BLUE_20         0x00, 0x00, 0x33 
-#define RGB_BLUE_10         0x00, 0x00, 0x1A 
+#define RGB_BLUE_90         0x00, 0x00, 0xE6
+#define RGB_BLUE_80         0x00, 0x00, 0xCC
+#define RGB_BLUE_70         0x00, 0x00, 0xB3
+#define RGB_BLUE_60         0x00, 0x00, 0x99
+#define RGB_BLUE_50         0x00, 0x00, 0x80
+#define RGB_BLUE_40         0x00, 0x00, 0x66
+#define RGB_BLUE_30         0x00, 0x00, 0x4D
+#define RGB_BLUE_20         0x00, 0x00, 0x33
+#define RGB_BLUE_10         0x00, 0x00, 0x1A
 #define RGB_BLUE_0          RGB_OFF
 
 #define RGB_PURPLE_100      RGB_PURPLE
-#define RGB_PURPLE_90       0x6F, 0x00, 0xE6 
-#define RGB_PURPLE_80       0x63, 0x00, 0xCC 
-#define RGB_PURPLE_70       0x56, 0x00, 0xB3 
-#define RGB_PURPLE_60       0x4A, 0x00, 0x99 
-#define RGB_PURPLE_50       0x3E, 0x00, 0x80 
-#define RGB_PURPLE_40       0x31, 0x00, 0x66 
-#define RGB_PURPLE_30       0x25, 0x00, 0x4D 
-#define RGB_PURPLE_20       0x19, 0x00, 0x33 
-#define RGB_PURPLE_10       0x0C, 0x00, 0x1A 
+#define RGB_PURPLE_90       0x6F, 0x00, 0xE6
+#define RGB_PURPLE_80       0x63, 0x00, 0xCC
+#define RGB_PURPLE_70       0x56, 0x00, 0xB3
+#define RGB_PURPLE_60       0x4A, 0x00, 0x99
+#define RGB_PURPLE_50       0x3E, 0x00, 0x80
+#define RGB_PURPLE_40       0x31, 0x00, 0x66
+#define RGB_PURPLE_30       0x25, 0x00, 0x4D
+#define RGB_PURPLE_20       0x19, 0x00, 0x33
+#define RGB_PURPLE_10       0x0C, 0x00, 0x1A
 #define RGB_PURPLE_0        RGB_OFF
 
 #define RGB_MAGENTA_100     RGB_MAGENTA
