@@ -14,8 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
 #define RGB_CAPSL           RGB_CYAN // Default color for the capslock affected keys
 #define RGB_LAYER           RGB_YELLOW    // Default color for the layer mod affected keys
 #define RGB_I3              RGB_YELLOW  // Default color for the i3 mod affected keys

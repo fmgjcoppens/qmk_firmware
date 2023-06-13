@@ -43,7 +43,9 @@ enum unicode_names {
     LU_CIRC,
     UU_CIRC,
     LU_TREM,
-    UU_TREM
+    UU_TREM,
+    LGUILLE,
+    RGUILLE
 };
 
 const uint32_t unicode_map[] PROGMEM = {
@@ -75,5 +77,7 @@ const uint32_t unicode_map[] PROGMEM = {
     [LU_CIRC] =   0xFB, // û
     [UU_CIRC] =   0xDB, // Û
     [LU_TREM] =   0xFC, // ü
-    [UU_TREM] =   0xDC  // Ü
+    [UU_TREM] =   0xDC, // Ü
+    [LGUILLE] =   0xAB, // «
+    [RGUILLE] =   0xBB, // »
 };
