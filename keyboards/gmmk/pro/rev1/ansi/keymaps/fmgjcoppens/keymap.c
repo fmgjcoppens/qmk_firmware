@@ -107,13 +107,11 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 };
 #endif
 
-///////// Add/modify key-press events /////////
-bool lgui_pressed = false;
-bool lsft_pressed = false;
-bool lctl_pressed = false;
-bool grv_pressed  = false;
-
-static uint16_t time;
+///////// Custom macros and/or modify key-press events /////////
+#ifdef ENABLE_TEST_CODE
+static bool grv_pressed  = false;
+#endif // ENABLE_TEST_CODE
+static uint16_t g_time;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     const uint8_t mods = get_mods();
@@ -125,9 +123,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     SEND_STRING("francois.coppens@irsamc.ups-tlse.fr");
                     register_mods(mods);
                 }
-                else {
+                else
                     SEND_STRING("mail@fmgjcoppens.nl");
-                }
             }
             break;
         case M_PHONE:
@@ -137,45 +134,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     SEND_STRING("+33783417748");
                     register_mods(mods);
                 }
-                else {
+                else
                     SEND_STRING("+33 (0)7 83 41 77 48");
-                }
             }
             break;
         case KC_LGUI:
-            if (record->event.pressed) {
-                lgui_pressed = true;
-                time = record->event.time;
-            }
-            else {
-                lgui_pressed = false;
-            }
-            break;
-        case KC_LSFT:
-            if (record->event.pressed) {
-                lsft_pressed = true;
-            }
-            else {
-                lsft_pressed = false;
-            }
-            break;
-        case KC_LCTL:
-            if (record->event.pressed) {
-                lctl_pressed = true;
-            }
-            else {
-                lctl_pressed = false;
-            }
+            if (record->event.pressed)  // Don't use '(mods & MOD_BIT_LGUI)' here, it will mess-up the timeings for the animations.
+                g_time = timer_read();  // read somewhere that this is more reliable than getting it from record->event.time
             break;
 #ifdef ENABLE_TEST_CODE
         case KC_GRV: // My 'test'-key
             if (record->event.pressed) {
                 grv_pressed = true;
-                time = record->event.time;
+                g_time = timer_read();
             }
-            else {
+            else
                 grv_pressed = false;
-            }
             break;
 #endif // ENABLE_TEST_CODE
     }
@@ -183,8 +157,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 ///////// Set RGB Matrix colors /////////
-
-// Set colors only on the layer-modifier keys and the keys they affect
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
 #ifdef ENABLE_TEST_CODE
@@ -200,7 +172,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     // Set default RGB colors for all layers: GOLD sidelights
     for (uint8_t led = led_min; led < led_max; ++led) {
         if (g_led_config.flags[led] & LED_FLAG_UNDERGLOW)
-            rgb_matrix_set_color(led, RGB_GOLD);
+            rgb_matrix_set_color(led, RGB_SIDE);
     }
 
     // Set color of ALPHA LEDs when CAPSLOCK is PRESSED
@@ -212,12 +184,13 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     // Set color of i3 modifier LEDs when i3 MODs are PRESSED
-    if (lgui_pressed) { // LGUI pressed
+    const uint8_t mods = get_mods();
+    if (mods & MOD_BIT_LGUI) { // LGUI pressed
         static const uint16_t delay = 75;
-        if (lsft_pressed && lctl_pressed) { // LGUI + LSFT + LCTRL pressed
+        if (mods & MOD_BIT_LCTRL && mods & MOD_BIT_LSHIFT) { // LGUI + LSFT + LCTRL pressed
             // do nothing
         }
-        else if (lsft_pressed) { // LGUI + LSFT pressed
+        else if (mods & MOD_BIT_LSHIFT) { // LGUI + LSFT pressed
             #include "anim/i3_ws_anim_breathe.c"
 
             rgb_matrix_set_color(i3_leds[12], RGB_I3);
@@ -234,7 +207,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             rgb_matrix_set_color(i3_leds[18], RGB_I3);
             rgb_matrix_set_color(i3_leds[16], RGB_I3);
         }
-        else if (lctl_pressed) { // LGUI + LCTL pressed
+        else if (mods & MOD_BIT_LCTRL) { // LGUI + LCTL pressed
             rgb_matrix_set_color(i3_leds[21], RGB_I3);
             rgb_matrix_set_color(i3_leds[24], RGB_I3);
             rgb_matrix_set_color(i3_leds[22], RGB_I3);
@@ -297,7 +270,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 // Set RGB Matrix default effect and color
 void keyboard_post_init_user(void) {
     rgb_matrix_mode(RGB_MATRIX_SOLID_COLOR);
-    rgb_matrix_sethsv(HSV_GOLD_00);
+    rgb_matrix_sethsv(HSV_DEFAULT);
 #ifdef ENABLE_TEST_CODE
     debug_enable=true;
     debug_matrix=true;

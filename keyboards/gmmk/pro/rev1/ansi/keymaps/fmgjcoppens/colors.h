@@ -14,9 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define RGB_CAPSL           RGB_CYAN // Default color for the capslock affected keys
-#define RGB_LAYER           RGB_YELLOW    // Default color for the layer mod affected keys
-#define RGB_I3              RGB_YELLOW  // Default color for the i3 mod affected keys
+#define HSV_DEFAULT         HSV_GOLD_00 // Default color for ALL LEDs (keys + side)
+
+#define RGB_SIDE            RGB_GOLD    // Default color for side LEDs. OVERRIDES DEFAULT
+#define RGB_KEYS            RGB_GOLD    // Default color for keys LEDs. OVERRIDES DEFAULT
+#define RGB_CAPSL           RGB_BLUE    // Default color for the capslock affected keys (alphas). OVERRIDES DEFAULT
+#define RGB_LAYER           RGB_YELLOW  // Default color for the layer mod affected keys. OVERRIDES DEFAULT
+#define RGB_I3              RGB_YELLOW  // Default color for the i3 mod affected keys. OVERRIDES DEFAULT
+// #define RGB_SIDE            RGB_GOLD    // Default color for side LEDs. OVERRIDES DEFAULT
+// #define RGB_KEYS            RGB_GOLD    // Default color for keys LEDs. OVERRIDES DEFAULT
+// #define RGB_CAPSL           RGB_MAGENTA    // Default color for the capslock affected keys (alphas). OVERRIDES DEFAULT
+// #define RGB_LAYER           RGB_CYAN  // Default color for the layer mod affected keys. OVERRIDES DEFAULT
+// #define RGB_I3              RGB_CYAN  // Default color for the i3 mod affected keys. OVERRIDES DEFAULT
 
 #define RGB_GOLD_75         0xBF, 0xA3, 0x00
 #define RGB_GOLD_50         0x80, 0x6C, 0x00
