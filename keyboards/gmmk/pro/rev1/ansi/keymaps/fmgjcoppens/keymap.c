@@ -120,11 +120,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if (mods & MOD_MASK_SHIFT) {
                     unregister_mods(MOD_MASK_SHIFT);
-                    SEND_STRING("francois.coppens@irsamc.ups-tlse.fr");
+                    SEND_STRING("fcoppens@aneo.fr");
                     register_mods(mods);
                 }
                 else
-                    SEND_STRING("mail@fmgjcoppens.nl");
+                    SEND_STRING("mail@fmgjcoppens.eu");
             }
             break;
         case M_PHONE:
