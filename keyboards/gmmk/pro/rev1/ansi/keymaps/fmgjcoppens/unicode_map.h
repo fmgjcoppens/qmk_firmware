@@ -14,6 +14,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* TODO: add these:
+ * U+00D3 	Ó   211
+ * U+00F3 	ó 	243
+ */
+
 enum unicode_names {
     LA_GRAV,
     UA_GRAV,
