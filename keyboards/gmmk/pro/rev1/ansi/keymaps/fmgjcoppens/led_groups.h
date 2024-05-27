@@ -21,9 +21,9 @@ const uint8_t alpha_leds[ALPHA_LEDS] = {
     10,16,22,27,32,38,43            //   Z, X, C, V, B, N, M
 };
 
-#define CL_LEDS 25
+#define CL_LEDS 27
 const uint8_t CL_leds[CL_LEDS] = {
-    0,6,12,13,18,23,28,58,34,50,56,61,66, // ESC, F1, F2, F3, F4, F5, F6, F9, F10, F11, F12
+    0,6,9,12,13,15,18,23,28,58,34,50,56,61,66, // ESC, F1, F2, F3, F4, F5, F6, F9, F10, F11, F12
     24,52,93,22,48,54,49,94,95,97,79,69   // 2, 4, P, O, \, C, ,, ., FN, UP, LEFT, DOWN, RIGHT, DEL/PRTSCR
 };
 
